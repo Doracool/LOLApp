@@ -7,29 +7,59 @@
 //
 
 #import "FirstViewController.h"
-@class UIImage;
-@interface FirstViewController ()
+#import "LGtitleBarView.h"
 
+@class UIImage;
+@interface FirstViewController ()<LGtitleBarViewDelegate,UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic, strong) NSArray *titles;
+@property (nonatomic, strong) LGtitleBarView *titleBar;
 @end
 
+#define KCollectionCellHeight 39
+static NSString *const cellIdentifier = @"cells";
+static NSString *QYID = @"cell";
 @implementation FirstViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [NSThread sleepForTimeInterval:3.0];
+    [NSThread sleepForTimeInterval:1.0];
+    LGtitleBarView *titleBar = [[LGtitleBarView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 45)];
+    self.titles = @[@"最新",@"新闻",@"赛事",@"娱乐"];
+    titleBar.titles = self.titles;
+    titleBar.delegate = self;
+    [self.view addSubview:titleBar];
     [self setNavigationBar];
+    
+
     
     
     // Do any additional setup after loading the view.
 }
 
+-(NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 1;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:QYID forIndexPath:indexPath];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:QYID];
+        
+        
+    }
+    return cell;
+}
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        UITabBarItem *tabBarItem = [[UITabBarItem alloc]initWithTitle:@"新闻资讯" image:[UIImage imageNamed:@"tab_infomation_normal"] selectedImage:[UIImage imageNamed:@"tab_infomation_selected"]];
+        UITabBarItem *tabBarItem = [[UITabBarItem alloc]initWithTitle:@"新闻资讯" image:[UIImage imageNamed:@"tab_infomation_normal"] selectedImage:[UIImage imageNamed:@"tab_infomation_seleted"]];
         self.tabBarItem = tabBarItem;
     }
+    self.tabBarController.tabBar.translucent = NO;
     return self;
 }
 
@@ -51,6 +81,7 @@
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.translucent = NO;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

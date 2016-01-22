@@ -9,7 +9,7 @@
 #import "QYTabBarViewController.h"
 
 @interface QYTabBarViewController ()
-
+@property (nonatomic,strong)UIView *underView;
 @end
 
 @implementation QYTabBarViewController
